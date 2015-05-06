@@ -6,15 +6,8 @@ import java.util.List;
 /**
  * Created by Taras.Mykulyn on 29.04.2015.
  */
-public interface UserRepository {
-    int saveUser(User user);
+public interface UserRepository extends GeneralRepository<User> {
 
-    boolean updateUser(User user);
-
-    boolean removeUser(int id);
-
-    User getUserById(int id);
-
-    List<User> getUsers(int lastId, int amount);
+    // additional methods specific to the User Repository go here
 
 }

@@ -2,140 +2,23 @@ package dao;
 
 import domain.Addvertisement;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
- * Created by macbookpro on 5/5/15.
+ * Created by Taras.Mykukyn on 5/5/15.
  */
-public class AdvertisementRepositoryImpl implements AdvertisementRepository {
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    public AdvertisementRepositoryImpl() { }
-
-    public AdvertisementRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+@Repository
+@Transactional
+public class AdvertisementRepositoryImpl extends GeneralRepositoryImpl<Addvertisement> implements AdvertisementRepository {
 
     @Override
-    @Transactional
-    public int addAdvertisement(Addvertisement add) {
-        Session session = null;
-        int id = -1;
-        try {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            id = (Integer) session.save(add);
-            session.getTransaction().commit();
-            return id;
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            if (session != null) {
-                session.getTransaction().rollback();
-            }
-            return -1;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-
-    @Override
-    @Transactional
-    public boolean updateAdvertisement(Addvertisement add) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            session.update(add);
-            session.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            if (session != null) {
-                session.getTransaction().rollback();
-            }
-            return false;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-
-    @Override
-    @Transactional
-    public boolean removeAdevertisement(int id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            Addvertisement add = getAdvertisementById(id);
-            if (add != null) {
-                session.delete(add);
-            } else {
-                return false;
-            }
-            session.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            if (session != null) {
-                session.getTransaction().rollback();
-            }
-            return false;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-
-    @Override
-    @Transactional
-    public Addvertisement getAdvertisementById(int id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-
-            String hql = "FROM Addvertisement WHERE id = :id";
-            Query query = sessionFactory.openSession().createQuery(hql);
-            query.setParameter("id", id);
-            List<Addvertisement> addList = (List<Addvertisement>) query.list();
-
-            session.getTransaction().commit();
-            if (addList != null && !addList.isEmpty()) {
-                return addList.get(0);
-            } else {
-                return null;
-            }
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            if (session != null) {
-                session.getTransaction().rollback();
-            }
-            return null;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-
-    @Override
-    @Transactional
-    public List getAdvertisementsByConditions(String location, String type, double minPrice, double maxPrice,
-                                               int numberOfRooms, String status, int numberOfAdds, int lastId) {
+    public List findByConditions(String location, String type, double minPrice, double maxPrice, int numberOfRooms, String status, int numberOfAdds, int lastId) {
         Session session = sessionFactory.openSession();
         Criteria criteria = session.createCriteria(Addvertisement.class);
         if (location != null && !location.equals("")) {
