@@ -9,15 +9,15 @@ import java.util.List;
  */
 public interface AdvertisementRepository {
 
-    int addAddvertisement(Addvertisement add);
+    int addAdvertisement(Addvertisement add);
 
-    boolean updateAddvertisement(Addvertisement add);
+    boolean updateAdvertisement(Addvertisement add);
 
-    boolean removeAddevertisement(int id);
+    boolean removeAdevertisement(int id);
 
-    Addvertisement getAddvertisementById(int id);
+    Addvertisement getAdvertisementById(int id);
 
-    List getAddvertisementsByConditions(String location, String type, double minPrice, double maxPrice,
+    List getAdvertisementsByConditions(String location, String type, double minPrice, double maxPrice,
                                         int numberOfRooms, String status, int numberOfAdds, int lastId);
 
 }

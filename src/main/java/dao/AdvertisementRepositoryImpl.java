@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class AdvertisementRepositoryImpl implements AdvertisementRepository {
 
-    @Autowired`
+    @Autowired
     private SessionFactory sessionFactory;
 
     public AdvertisementRepositoryImpl() { }
@@ -27,7 +27,7 @@ public class AdvertisementRepositoryImpl implements AdvertisementRepository {
 
     @Override
     @Transactional
-    public int addAddvertisement(Addvertisement add) {
+    public int addAdvertisement(Addvertisement add) {
         Session session = null;
         int id = -1;
         try {
@@ -50,7 +50,8 @@ public class AdvertisementRepositoryImpl implements AdvertisementRepository {
     }
 
     @Override
-    public boolean updateAddvertisement(Addvertisement add) {
+    @Transactional
+    public boolean updateAdvertisement(Addvertisement add) {
         Session session = null;
         try {
             session = sessionFactory.openSession();
@@ -72,12 +73,13 @@ public class AdvertisementRepositoryImpl implements AdvertisementRepository {
     }
 
     @Override
-    public boolean removeAddevertisement(int id) {
+    @Transactional
+    public boolean removeAdevertisement(int id) {
         Session session = null;
         try {
             session = sessionFactory.openSession();
             session.beginTransaction();
-            Addvertisement add = getAddvertisementById(id);
+            Addvertisement add = getAdvertisementById(id);
             if (add != null) {
                 session.delete(add);
             } else {
@@ -99,7 +101,8 @@ public class AdvertisementRepositoryImpl implements AdvertisementRepository {
     }
 
     @Override
-    public Addvertisement getAddvertisementById(int id) {
+    @Transactional
+    public Addvertisement getAdvertisementById(int id) {
         Session session = null;
         try {
             session = sessionFactory.openSession();
@@ -130,7 +133,8 @@ public class AdvertisementRepositoryImpl implements AdvertisementRepository {
     }
 
     @Override
-    public List getAddvertisementsByConditions(String location, String type, double minPrice, double maxPrice,
+    @Transactional
+    public List getAdvertisementsByConditions(String location, String type, double minPrice, double maxPrice,
                                                int numberOfRooms, String status, int numberOfAdds, int lastId) {
         Session session = sessionFactory.openSession();
         Criteria criteria = session.createCriteria(Addvertisement.class);

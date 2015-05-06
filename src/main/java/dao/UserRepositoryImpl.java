@@ -1,11 +1,12 @@
 package dao;
 
 import domain.User;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,41 +29,122 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public void saveUser(User user) {
-
+    public int saveUser(User user) {
+        Session session = null;
+        int id = -1;
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            id = (Integer) session.save(user);
+            session.getTransaction().commit();
+            return id;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            if (session != null) {
+                session.getTransaction().rollback();
+            }
+            return -1;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
     @Transactional
-    public void updateUser(User user) {
-
+    public boolean updateUser(User user) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(user);
+            session.getTransaction().commit();
+            return true;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            if (session != null) {
+                session.getTransaction().rollback();
+            }
+            return false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
     @Transactional
-    public void removeUser(int id) {
-
+    public boolean removeUser(int id) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            User user = getUserById(id);
+            if (user != null) {
+                session.delete(user);
+            } else {
+                return false;
+            }
+            session.getTransaction().commit();
+            return true;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            if (session != null) {
+                session.getTransaction().rollback();
+            }
+            return false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
     @Transactional
     public User getUserById(int id) {
-        String hql = "from User where id=" + id;
-        Query query = sessionFactory.openSession().createQuery(hql);
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
 
-        @SuppressWarnings("unchecked")
-        List<User> listUser = (List<User>) query.list();
+            String hql = "FROM User WHERE id = :id";
+            Query query = sessionFactory.openSession().createQuery(hql);
+            query.setParameter("id", id);
+            List<User> userList = (List<User>) query.list();
 
-        if (listUser != null && !listUser.isEmpty()) {
-            return listUser.get(0);
+            session.getTransaction().commit();
+            if (userList != null && !userList.isEmpty()) {
+                return userList.get(0);
+            } else {
+                return null;
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            if (session != null) {
+                session.getTransaction().rollback();
+            }
+            return null;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
-        System.out.println(listUser.get(0).getFirstName());
-        return null;
     }
 
     @Override
     @Transactional
-    public List<User> getAllUsers() {
+    public List<User> getUsers(int lastId, int amount) {
+        Session session = sessionFactory.openSession();
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.gt("id", lastId));
+        criteria.setMaxResults(amount);
+        List userList = criteria.list();
+        if (userList != null && !userList.isEmpty()) {
+            return userList;
+        }
         return null;
     }
 }
