@@ -1,15 +1,18 @@
 package dao;
 
-import domain.Addvertisement;
+import domain.Advertisement;
 
 import java.util.List;
 
 /**
  * Created by Taras.Mykulyn on 29.04.2015.
  */
-public interface AdvertisementRepository extends GeneralRepository<Addvertisement> {
+public interface AdvertisementRepository extends GeneralRepository<Advertisement> {
 
     List findByConditions(String location, String type, double minPrice, double maxPrice,
-                                        int numberOfRooms, String status, int numberOfAdds, int lastId);
+                          int numberOfRooms, String status, int numberOfAdds, int lastId);
+
+    long countByConditions(String location, String type, double minPrice, double maxPrice,
+                          int numberOfRooms, String status, int numberOfAdds, int lastId);
 
 }
