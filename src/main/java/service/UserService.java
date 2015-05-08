@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    int addUser(User user);
+    boolean addUser(User user);
 
     boolean updateUser(User user);
 
@@ -18,7 +18,5 @@ public interface UserService {
     User findUserById(int id);
 
     List<User> findUsers(int lastId, int amount);
-
-    boolean checkUserCredentials(String email, String password);
 
 }

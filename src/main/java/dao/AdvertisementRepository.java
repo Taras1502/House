@@ -12,7 +12,7 @@ public interface AdvertisementRepository extends GeneralRepository<Advertisement
     List findByConditions(String location, String type, double minPrice, double maxPrice,
                           int numberOfRooms, String status, int numberOfAdds, int lastId);
 
-    long countByConditions(String location, String type, double minPrice, double maxPrice,
-                          int numberOfRooms, String status, int numberOfAdds, int lastId);
+    int countByConditions(String location, String type, double minPrice, double maxPrice,
+                          int numberOfRooms, String status);
 
 }

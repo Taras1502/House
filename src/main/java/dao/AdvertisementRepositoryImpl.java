@@ -33,11 +33,11 @@ public class AdvertisementRepositoryImpl extends GeneralRepositoryImpl<Advertise
     }
 
     @Override
-    public long countByConditions(String location, String type, double minPrice, double maxPrice,
-                                 int numberOfRooms, String status, int numberOfAdds, int lastId) {
+    public int countByConditions(String location, String type, double minPrice, double maxPrice,
+                                 int numberOfRooms, String status) {
         Session session = sessionFactory.openSession();
         Criteria criteria = fillCriteria(session, location, type, minPrice, maxPrice, numberOfRooms, status);
-        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+        return (Integer) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     private Criteria fillCriteria(Session session, String location, String type, double minPrice,

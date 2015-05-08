@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface AdvertisementService {
 
-    int addAdvertisement(Advertisement advertisement);
+    boolean addAdvertisement(Advertisement advertisement);
 
     boolean updateAdvertisement(Advertisement advertisement);
 
@@ -18,11 +18,11 @@ public interface AdvertisementService {
 
     Advertisement findAdvertisementById(int id);
 
-    List<User> findAdvertisements(int lastId, int amount);
+    List<Advertisement> findAdvertisements(int lastId, int amount);
 
-    int countAllAdvertisements();
+    int countAllAdvertisements(String status);
 
     int countAdvertisementsByConditions(String location, String type, double minPrice, double maxPrice,
-                                        int numberOfRooms, String status, int numberOfAdds, int lastId);
+                                        int numberOfRooms, String status);
 
 }
