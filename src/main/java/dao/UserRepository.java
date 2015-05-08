@@ -10,4 +10,6 @@ public interface UserRepository extends GeneralRepository<User> {
 
     // additional methods specific to the User Repository go here
 
+    User findByUsername(String username);
+
 }

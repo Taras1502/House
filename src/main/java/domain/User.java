@@ -20,27 +20,35 @@ public class User {
     @Column(name = "lastName")
     private String lastName;
 
+    @Column(name = "username")
+    private String username;
+
     @Column(name = "email")
     private String email;
 
     @Column(name = "password")
     private String password;
 
+    @Column(name = "enabled")
+    private short enabled;
+
     @Column(name = "address")
     private String address;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "role")
+    private String role;
 
     public User() {}
 
-    public User(String firstName, String lastName, String email, String password, String address, String status) {
+    public User(String firstName, String lastName, String username, String email, String password, short enabled, String address, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
         this.email = email;
         this.password = password;
+        this.enabled = enabled;
         this.address = address;
-        this.status = status;
+        this.role = role;
     }
 
     public int getId() {
@@ -61,6 +69,22 @@ public class User {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public short getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(short enabled) {
+        this.enabled = enabled;
     }
 
     public void setLastName(String lastName) {
@@ -91,11 +115,11 @@ public class User {
         this.address = address;
     }
 
-    public String getStatus() {
-        return status;
+    public String getRole() {
+        return role;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setRole(String role) {
+        this.role = role;
     }
 }
